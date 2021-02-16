@@ -4,7 +4,8 @@ var todoSchema = new mongoose.Schema({
     subject: String,
     date: String,
     todo:String
-
 });
+
+
 
 module.exports = mongoose.model("Todo", todoSchema);

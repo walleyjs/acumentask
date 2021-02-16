@@ -42,25 +42,28 @@ const init = async () => {
     };
     server.route({  method: 'POST', 
     path: '/newtodo',
-    handler: function (request, reply) {
+    handler: async (request, h)=> {
         const subject = "walley";
         const todo="things i wnat to do"
-        const nTodo={
-            subject:subject,
-            todo:todo
+        const nTodo=JSON.parse(request.payload);
+        
+        console.log("payload here ", nTodo)
+        console.log(nTodo.subject)
+        const newTodo={
+            todo:nTodo.todo,
+            subject:nTodo.subject
         }
-
-         todomodel.create(nTodo, (err, content) => {
+        var todomode=  await todomodel.create(newTodo, (err, content) => {
             if (err) {
                 console.log(err)
                 console.log("/////////////////" + "err while posting the content");
              return err
             } else {
-            reply(content)
+         console.log(content)
             }
         })
 
-        return 'data sent';
+        return request.payload;
 
     }
  })
@@ -73,7 +76,7 @@ const init = async () => {
             if (err) {
                 console.log(err)
             } 
-         console.log("dont know")
+         console.log(todos.todo)
             
         })
        return todomode;
