@@ -7,7 +7,10 @@ const todomodel=require('./models/todo')
 const mongoose = require("mongoose");
 const server = Hapi.server({
     port: 8000,
-    host: 'localhost'
+    host: 'localhost',
+    routes: {
+        cors: true
+    }
 });
 mongoose.connect("mongodb://localhost/tododb", { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
 var db = mongoose.connection;
@@ -47,21 +50,13 @@ const init = async () => {
         const todo="things i wnat to do"
         const nTodo=JSON.parse(request.payload);
         
-        console.log("payload here ", nTodo)
-        console.log(nTodo.subject)
+        // console.log("payload here ", nTodo)
+        // console.log(nTodo.subject)
         const newTodo={
             todo:nTodo.todo,
             subject:nTodo.subject
         }
-        var todomode=  await todomodel.create(newTodo, (err, content) => {
-            if (err) {
-                console.log(err)
-                console.log("/////////////////" + "err while posting the content");
-             return err
-            } else {
-         console.log(content)
-            }
-        })
+        var todomode=  await todomodel.create(newTodo)
 
         return request.payload;
 

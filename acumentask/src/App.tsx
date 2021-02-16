@@ -1,7 +1,7 @@
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonList, IonItemDivider, IonTextarea, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonList,IonRow ,IonCol, IonItemDivider, IonTextarea, IonButton } from '@ionic/react';
 
 import React,{Component} from 'react';
 /* Core CSS required for Ionic components to work properly */
@@ -30,10 +30,13 @@ interface AppState {
 class App extends React.Component <any, any>{
   constructor(props: any,state:any) {
     super(props);
-    this.state = { todo: ''};
+    this.state = {
+       todo: '',
+       populatedTodos:[]
+  
+  };
+
   }
-
-
   handleChange = (data : any) => {
     this.setState({[data.target.todo]: data.target.value});
   }
@@ -43,7 +46,8 @@ class App extends React.Component <any, any>{
     // alert('A form was submitted: ' + this.state.todo);
     let databody = {
       'subject':'your subject',
-      'todo': this.state.todo
+      'todo': this.state.todo,
+      
       
   }
 
@@ -53,14 +57,59 @@ class App extends React.Component <any, any>{
         body: JSON.stringify(databody)
       }).then((response)=> {
         this.setState({todo:''})
+      console.log("response")
         console.log(response);
       
-        // return response.json();
+        return response.json();
        
+      }).catch((err)=>{
+        console.log(err)
       });
-
+  console.log('helllo')
     e.preventDefault();
+  
 }
+
+myTodo= async()=> {
+  
+   return this.state.populatedTodos.map((todo:any,index:any)=> {
+    <IonItem key={index}>
+      {todo.subject} {todo.tdo}
+    </IonItem>
+    console.log(todo.subject)
+  })
+  
+  
+ 
+}
+
+componentDidMount(){
+console.log('here')
+  fetch('http://localhost:8000/newtodo', {
+    method: 'Get',
+    // We convert the React state to JSON and send it as the POST body
+  
+  }).then((response)=> {
+  // console.log(d)
+    console.log(response);
+    // this.setState({populatedTodos:response})
+    return response.json();
+   
+  }).then((data) => {
+    var newData=[]
+    newData.push(data)
+    // data.push(newData)
+    this.setState({populatedTodos:data})
+    
+    // console.log('This is your data',newData)
+    // this.myTodo()
+  })
+  .catch((err)=>{
+    console.log(err)
+  });
+
+}
+
   render(){
     return (
       <IonApp>
@@ -78,11 +127,45 @@ class App extends React.Component <any, any>{
           </IonItem>
         
           <IonItem>
-          <IonButton color="dark" onClick={this.handleSubmit}>Dark</IonButton>
+          <IonButton color="dark" onClick={this.handleSubmit.bind(this)}>Dark</IonButton>
           </IonItem>
+          <IonItem>
+         ghfhf
+          </IonItem>
+        
         </IonList>
-        </form> 
+      
        
+     
+     
+        </form> 
+          {/* {this.myTodo} */}
+          <IonList>
+          { 
+          this.state.populatedTodos.map((todo:any,index:any)=> (
+            <IonItem key={index}>
+             
+            <p>{todo.subject}</p> 
+            <p>{todo.todo}</p> 
+            </IonItem >
+            // console.log(todo.subject)
+          ))
+          
+           }
+          </IonList>
+          {/* <>
+           { 
+          this.state.populatedTodos.map((todo:any,index:any)=> (
+            <IonRow key={index}>
+              <IonCol size="9">
+            <p> {todo.subject} </p> 
+            </IonCol>
+            </IonRow>
+            // console.log(todo.subject)
+    ))
+          
+           }
+           </> */}
         </IonContent>
         </IonPage>
    
