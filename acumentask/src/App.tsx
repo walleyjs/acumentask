@@ -1,12 +1,12 @@
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonList,IonRow ,IonCol, IonItemDivider, IonTextarea, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonList,IonRow ,IonCol, IonItemDivider, IonTextarea, IonButton} from '@ionic/react';
 
 import React,{Component} from 'react';
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
-
+import './App.css'
 /* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
@@ -37,6 +37,9 @@ class App extends React.Component <any, any>{
   };
 
   }
+  redirect = ()=>{
+    // history.push("/")
+  }
   handleChange = (data : any) => {
     this.setState({[data.target.todo]: data.target.value});
   }
@@ -45,7 +48,7 @@ class App extends React.Component <any, any>{
   handleSubmit = (e: any) => {
     // alert('A form was submitted: ' + this.state.todo);
     let databody = {
-      'subject':'your subject',
+     
       'todo': this.state.todo,
       
       
@@ -57,9 +60,13 @@ class App extends React.Component <any, any>{
         body: JSON.stringify(databody)
       }).then((response)=> {
         this.setState({todo:''})
-      console.log("response")
+      //  this.state.history.push('/')
+    this.context.history.push('/')
+      console.log("response", "thsi response")
         console.log(response);
-      
+   
+    
+      // <Redirect exact from '/' to '/' />
         return response.json();
        
       }).catch((err)=>{
@@ -67,6 +74,7 @@ class App extends React.Component <any, any>{
       });
   console.log('helllo')
     e.preventDefault();
+ 
   
 }
 
@@ -84,6 +92,7 @@ myTodo= async()=> {
 }
 
 componentDidMount(){
+  
 console.log('here')
   fetch('http://localhost:8000/newtodo', {
     method: 'Get',
@@ -92,12 +101,17 @@ console.log('here')
   }).then((response)=> {
   // console.log(d)
     console.log(response);
+    // this.context.history.push('/')
     // this.setState({populatedTodos:response})
+    // <IonRouterOutlet>
+    //   <Redirect exact from ='/' to ='/'>
+    // </IonRouterOutlet>
     return response.json();
    
   }).then((data) => {
     var newData=[]
     newData.push(data)
+  
     // data.push(newData)
     this.setState({populatedTodos:data})
     
@@ -116,22 +130,36 @@ console.log('here')
          <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>IonInput Examples</IonTitle>
+          <IonTitle>My Todos</IonTitle>
         </IonToolbar>
         </IonHeader>
         <IonContent>
+        <IonList className="ioList">
+          { 
+          this.state.populatedTodos.map((todo:any,index:any)=> (
+            <IonItem key={index} >
+             
+            <div className="ioItem">
+           
+              <div>{todo.todo}</div> 
+              </div> 
+         
+            </IonItem >
+            // console.log(todo.subject)
+          ))
+          
+           }
+          </IonList>
         <form >
-        <IonList>
-        <IonItem>
-            <IonInput value={this.state.todo} placeholder="Enter Input" onIonChange={e => this.setState({todo:e.detail.value!})}></IonInput>
+        <IonList className="ioList">
+        <IonItem  className="ioInput">
+            <IonInput value={this.state.todo} placeholder="Enter subject" onIonChange={e => this.setState({todo:e.detail.value!})}></IonInput>
           </IonItem>
         
           <IonItem>
-          <IonButton color="dark" onClick={this.handleSubmit.bind(this)}>Dark</IonButton>
+          <IonButton color="dark" onClick={this.handleSubmit.bind(this)} >Add Todo</IonButton>
           </IonItem>
-          <IonItem>
-         ghfhf
-          </IonItem>
+         
         
         </IonList>
       
@@ -140,32 +168,8 @@ console.log('here')
      
         </form> 
           {/* {this.myTodo} */}
-          <IonList>
-          { 
-          this.state.populatedTodos.map((todo:any,index:any)=> (
-            <IonItem key={index}>
-             
-            <p>{todo.subject}</p> 
-            <p>{todo.todo}</p> 
-            </IonItem >
-            // console.log(todo.subject)
-          ))
-          
-           }
-          </IonList>
-          {/* <>
-           { 
-          this.state.populatedTodos.map((todo:any,index:any)=> (
-            <IonRow key={index}>
-              <IonCol size="9">
-            <p> {todo.subject} </p> 
-            </IonCol>
-            </IonRow>
-            // console.log(todo.subject)
-    ))
-          
-           }
-           </> */}
+        
+       
         </IonContent>
         </IonPage>
    

@@ -54,7 +54,7 @@ const init = async () => {
         // console.log(nTodo.subject)
         const newTodo={
             todo:nTodo.todo,
-            subject:nTodo.subject
+           
         }
         var todomode=  await todomodel.create(newTodo)
 

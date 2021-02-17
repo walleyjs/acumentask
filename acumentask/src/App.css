@@ -1,0 +1,17 @@
+.ioList{
+    display: flex;
+    flex-direction: column;
+}
+.ioItem{
+ display: flex;
+ flex-direction: column;
+ 
+}
+.ioItem div{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0px 10px 0px 10px;
+}
+.ioInput{
+margin: 0px 10px 0px 10px;
+}
