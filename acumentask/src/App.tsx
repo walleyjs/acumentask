@@ -153,7 +153,7 @@ console.log('here')
         <form >
         <IonList className="ioList">
         <IonItem  className="ioInput">
-            <IonInput value={this.state.todo} placeholder="Enter subject" onIonChange={e => this.setState({todo:e.detail.value!})}></IonInput>
+            <IonInput value={this.state.todo} placeholder="Enter todo" onIonChange={e => this.setState({todo:e.detail.value!})}></IonInput>
           </IonItem>
         
           <IonItem>
