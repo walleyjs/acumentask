@@ -1,7 +1,7 @@
 # acumentask
 #### make sure you have a mongodb server running as the database used is mongodb
 
-#### comman line task
+#### #command line task
 
 #### npm install to install all packages
 #### cd ./acumentask && ionic serve to start the ionic server
