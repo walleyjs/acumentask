@@ -46,8 +46,7 @@ const init = async () => {
     server.route({  method: 'POST', 
     path: '/newtodo',
     handler: async (request, h)=> {
-        const subject = "walley";
-        const todo="things i wnat to do"
+      
         const nTodo=JSON.parse(request.payload);
         
         // console.log("payload here ", nTodo)
@@ -77,7 +76,26 @@ const init = async () => {
        return todomode;
     }
  })
-    server.route({ 
+
+ server.route({
+    method: 'PUT', 
+    path:'/newtodoedit',
+    handler: async (request, h)=> {
+      
+        const nTodo=JSON.parse(request.payload);
+       console.log("put outcome ",nTodo)
+        const updTodo={
+            todo:nTodo.todo,
+           
+        }
+        var todomode=  await todomodel.findByIdAndUpdate(nTodo.tId,updTodo)
+
+        return request.payload;
+
+    }
+
+ })
+server.route({ 
         method: 'GET', 
     path: '/user', options: user });
     
@@ -86,3 +104,4 @@ const init = async () => {
 };
 
 init();
+

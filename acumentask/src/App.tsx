@@ -32,14 +32,16 @@ class App extends React.Component <any, any>{
     super(props);
     this.state = {
        todo: '',
-       populatedTodos:[]
+       populatedTodos:[],
+       isVisible:false,
+       index:"",
+       editTodo:'',
+      
   
   };
 
   }
-  redirect = ()=>{
-    // history.push("/")
-  }
+ 
   handleChange = (data : any) => {
     this.setState({[data.target.todo]: data.target.value});
   }
@@ -95,23 +97,45 @@ class App extends React.Component <any, any>{
  
   
 }
+    editForm=(todo:any)=>{
+      console.log(todo)
+      
+      if(this.state.isVisible==true && this.state.index==todo._id){
+      
+        return ( 
 
-myTodo= async()=> {
-  
-   return this.state.populatedTodos.map((todo:any,index:any)=> {
-    <IonItem key={index}>
-      {todo.subject} {todo.tdo}
-    </IonItem>
-    console.log(todo.subject)
-  })
-  
-  
- 
-}
+        <IonList className="ioList">
+        <IonItem  className="ioInput">
+            <IonInput value={this.state.editTodo} placeholder="Enter todo" onIonChange={e=> this.setState({editTodo:e.detail.value} )}></IonInput>
+          </IonItem>
+        
+          <IonItem>
+          <IonButton color="dark" onClick={this.handleEdit.bind(this)} >save</IonButton>
+          </IonItem>
+        </IonList>)
+      }else{
+        return <div>{todo.todo}</div>
+      }
+    }
+   
+  handleEdit=()=>{
+    let databody = {
+      'todo': this.state.editTodo,
+      'tId':this.state.index
+  }
+    fetch('http://localhost:8000/newtodoedit', {
+      method: 'PUT',
+      // We convert the React state to JSON and send it as the POST body
+      body: JSON.stringify(databody)
+    }).then((response)=>{
+      console.log(response)
+    })
+  }
+
 
 componentDidMount(){
   
-console.log('here')
+// console.log('here')
   fetch('http://localhost:8000/newtodo', {
     method: 'Get',
  
@@ -122,13 +146,12 @@ console.log('here')
     return response.json();
    
   }).then((data) => {
-    var newData=[]
-    newData.push(data)
+   
   
-    // data.push(newData)
+  
     this.setState({populatedTodos:data})
     
-    // console.log('This is your data',newData)
+    console.log(data[0])
     // this.myTodo()
   })
   .catch((err)=>{
@@ -136,6 +159,7 @@ console.log('here')
   });
 
 }
+
 
   render(){
     return (
@@ -150,11 +174,19 @@ console.log('here')
         <IonList className="ioList">
           { 
           this.state.populatedTodos.map((todo:any,index:any)=> (
+            
             <IonItem key={index} >
              
             <div className="ioItem">
            
-              <div>{todo.todo}</div> 
+              <div> 
+
+              {this.editForm(todo)}
+             
+                <IonButton color="dark" onClick={()=>{this.setState({isVisible:true,index:todo._id,editTodo:todo.todo})
+                }} >Edit</IonButton>
+                </div> 
+              
               </div> 
          
             </IonItem >
@@ -172,12 +204,7 @@ console.log('here')
           <IonItem>
           <IonButton color="dark" onClick={this.handleSubmit.bind(this)} >Add Todo</IonButton>
           </IonItem>
-         
-        
         </IonList>
-      
-       
-     
      
         </form> 
           {/* {this.myTodo} */}
