@@ -97,14 +97,14 @@ class App extends React.Component <any, any>{
       
         return ( 
 
-        <IonList className="ioList">
-        <IonItem  className="ioInput">
-            <IonInput value={this.state.editTodo} placeholder="Enter todo" onIonChange={e=> this.setState({editTodo:e.detail.value} )}></IonInput>
+        <IonList className="iosList">
+        <IonItem  className="iosInput">
+            <IonInput value={this.state.editTodo} placeholder="Enter text" onIonChange={e=> this.setState({editTodo:e.detail.value})}></IonInput>
           </IonItem>
         
-          <IonItem>
-          <IonButton color="dark" onClick={this.handleEdit.bind(this)} >save</IonButton>
-          </IonItem>
+         
+          <IonButton color="success" onClick={this.handleEdit.bind(this)} >save</IonButton>
+        
         </IonList>)
       }else{
         return <div>{todo.todo}</div>
@@ -219,10 +219,16 @@ componentDidMount(){
               <div> 
 
               {this.editForm(todo)}
-             
-                <IonButton color="dark" onClick={()=>{this.setState({isVisible:true,index:todo._id,editTodo:todo.todo})
-                }} >Edit</IonButton>
-                <IonButton color="dark" onClick={()=>{this.handleDelete(todo._id)}}> Delete</IonButton>
+              {
+                this.state.index==todo._id ? '':<div>
+                  <IonButton color="primary" onClick={()=>{this.setState({isVisible:true,index:todo._id,editTodo:todo.todo})
+              }} >Edit</IonButton>
+              <IonButton color="danger" onClick={()=>{this.handleDelete(todo._id)}}> Delete</IonButton>
+                </div>
+                 
+              }
+               
+
                 </div> 
               
               </div> 
@@ -240,7 +246,7 @@ componentDidMount(){
           </IonItem>
         
           <IonItem>
-          <IonButton color="dark" onClick={this.handleSubmit.bind(this)} >Add Todo</IonButton>
+          <IonButton color="secondary" onClick={this.handleSubmit.bind(this)} >Add Todo</IonButton>
           </IonItem>
         </IonList>
      

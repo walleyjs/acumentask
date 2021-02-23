@@ -1,6 +1,7 @@
 .ioList{
     display: flex;
     flex-direction: column;
+    /* width: 100%; */
 }
 .ioItem{
  display: flex;
@@ -13,5 +14,9 @@
     margin: 0px 10px 0px 10px;
 }
 .ioInput{
-margin: 0px 10px 0px 10px;
+    margin: 0px 10px 0px 10px;
+}
+
+.iosInput {
+    width: 1024px;
 }

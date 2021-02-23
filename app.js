@@ -102,7 +102,7 @@ const init = async () => {
     handler: async (request, h)=> {
       
         const nTodo=JSON.parse(request.payload);
-       console.log("del outcome ",nTodo)
+      
         var todomode=  await todomodel.findByIdAndDelete(nTodo.tId)
         return request.payload;
 
