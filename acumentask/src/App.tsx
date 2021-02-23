@@ -60,14 +60,32 @@ class App extends React.Component <any, any>{
         body: JSON.stringify(databody)
       }).then((response)=> {
         this.setState({todo:''})
-      //  this.state.history.push('/')
-    this.context.history.push('/')
       console.log("response", "thsi response")
-        console.log(response);
-   
-    
-      // <Redirect exact from '/' to '/' />
-        return response.json();
+        // console.log(response);
+
+        // return response.json();
+        fetch('http://localhost:8000/newtodo', {
+          method: 'Get',
+       
+        }).then((response)=> {
+      
+          console.log(response);
+         
+          return response.json();
+         
+        }).then((data) => {
+          var newData=[]
+          newData.push(data)
+        
+          // data.push(newData)
+          this.setState({populatedTodos:data})
+          
+          // console.log('This is your data',newData)
+          // this.myTodo()
+        })
+        .catch((err)=>{
+          console.log(err)
+        });
        
       }).catch((err)=>{
         console.log(err)
@@ -96,16 +114,11 @@ componentDidMount(){
 console.log('here')
   fetch('http://localhost:8000/newtodo', {
     method: 'Get',
-    // We convert the React state to JSON and send it as the POST body
-  
+ 
   }).then((response)=> {
-  // console.log(d)
+
     console.log(response);
-    // this.context.history.push('/')
-    // this.setState({populatedTodos:response})
-    // <IonRouterOutlet>
-    //   <Redirect exact from ='/' to ='/'>
-    // </IonRouterOutlet>
+   
     return response.json();
    
   }).then((data) => {

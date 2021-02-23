@@ -71,7 +71,7 @@ const init = async () => {
             if (err) {
                 console.log(err)
             } 
-         console.log(todos.todo)
+        //  console.log(todos.todo)
             
         })
        return todomode;
