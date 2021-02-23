@@ -48,7 +48,7 @@ class App extends React.Component <any, any>{
 
 
   handleSubmit = (e: any) => {
-    // alert('A form was submitted: ' + this.state.todo);
+  
     let databody = {
      
       'todo': this.state.todo,
@@ -58,14 +58,12 @@ class App extends React.Component <any, any>{
 
     fetch('http://localhost:8000/newtodo', {
         method: 'POST',
-        // We convert the React state to JSON and send it as the POST body
+      
         body: JSON.stringify(databody)
       }).then((response)=> {
         this.setState({todo:''})
       console.log("response", "thsi response")
-        // console.log(response);
-
-        // return response.json();
+      
         fetch('http://localhost:8000/newtodo', {
           method: 'Get',
        
@@ -76,14 +74,9 @@ class App extends React.Component <any, any>{
           return response.json();
          
         }).then((data) => {
-          var newData=[]
-          newData.push(data)
-        
-          // data.push(newData)
+          
           this.setState({populatedTodos:data})
           
-          // console.log('This is your data',newData)
-          // this.myTodo()
         })
         .catch((err)=>{
           console.log(err)
@@ -128,10 +121,54 @@ class App extends React.Component <any, any>{
       // We convert the React state to JSON and send it as the POST body
       body: JSON.stringify(databody)
     }).then((response)=>{
+      this.setState({isVisible:false,editTodo:'',index:''})
+      fetch('http://localhost:8000/newtodo', {
+        method: 'Get',
+
+     
+      }).then((response)=> {
+        console.log(response);
+        return response.json();
+      }).then((data) => {
+        
+        this.setState({populatedTodos:data})
+        
+      })
+      .catch((err)=>{
+        console.log(err)
+      });
+     
       console.log(response)
     })
   }
 
+handleDelete =(tId:any)=>{
+  let databody = {
+    'tId':tId
+}
+  fetch('http://localhost:8000/newtododel', {
+    method: 'DELETE',
+    // We convert the React state to JSON and send it as the POST body
+    body: JSON.stringify(databody)
+  }).then((response)=>{
+    fetch('http://localhost:8000/newtodo', {
+      method: 'Get',
+    }).then((response)=> {
+      console.log(response);
+      return response.json();
+    }).then((data) => {
+      
+      this.setState({populatedTodos:data})
+      
+    })
+    .catch((err)=>{
+      console.log(err)
+    });
+    return response.json;
+  }).catch((err)=>{
+    console.log(err)
+  });
+}
 
 componentDidMount(){
   
@@ -185,6 +222,7 @@ componentDidMount(){
              
                 <IonButton color="dark" onClick={()=>{this.setState({isVisible:true,index:todo._id,editTodo:todo.todo})
                 }} >Edit</IonButton>
+                <IonButton color="dark" onClick={()=>{this.handleDelete(todo._id)}}> Delete</IonButton>
                 </div> 
               
               </div> 
