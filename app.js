@@ -5,16 +5,24 @@ const Ejs = require('ejs');
 const Vision = require('@hapi/vision');
 const todomodel=require('./models/todo')
 const mongoose = require("mongoose");
+const cors =require('cors')
+
 const server = Hapi.server({
     port: 8000,
-    host: 'localhost',
+    host: '0.0.0.0/0',
     routes: {
-        cors: true,
+        "cors": {
+            "origin": ["http://0.0.0.0/0"],
+            "headers": ["Accept", "Content-Type"],
+            "additionalHeaders": ["X-Requested-With"]
+        }
       
     }
 
 });
-
+server.register(
+    {cors:cors()}
+)
 mongoose.connect("mongodb+srv://walley:walley@vclust.sjqey.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
 
 // mongoose.connect("mongodb://localhost/tododb", { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
