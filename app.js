@@ -9,9 +9,12 @@ const server = Hapi.server({
     port: 8000,
     host: 'localhost',
     routes: {
-        cors: true
+        cors: true,
+      
     }
+
 });
+
 mongoose.connect("mongodb://localhost/tododb", { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
@@ -46,16 +49,23 @@ const init = async () => {
     server.route({  method: 'POST', 
     path: '/newtodo',
     handler: async (request, h)=> {
-      
-        const nTodo=JSON.parse(request.payload);
-        
+      console.log(request.payload)
+        // const nTodo=JSON.parse(request.payload);
+        const pLoad=request.payload
         // console.log("payload here ", nTodo)
         // console.log(nTodo.subject)
-        const newTodo={
-            todo:nTodo.todo,
-           
+        // for vue project
+        const vueTodo={
+            todo:pLoad.todo,
+            completed:pLoad.completed
         }
-        var todomode=  await todomodel.create(newTodo)
+        // for react projec÷t
+        // const newTodo={
+        //     todo:nTodo.todo,
+        //     completed:nTodo.completed
+           
+        // }
+        var todomode=  await todomodel.create(vueTodo)
 
         return request.payload;
 

@@ -3,7 +3,8 @@ var mongoose = require("mongoose");
 var todoSchema = new mongoose.Schema({
     subject: String,
     date: String,
-    todo:String
+    todo:String,
+    completed:Boolean
 });
 
 
