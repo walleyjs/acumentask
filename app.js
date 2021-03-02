@@ -15,7 +15,9 @@ const server = Hapi.server({
 
 });
 
-mongoose.connect("mongodb://localhost/tododb", { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://walley:walley@vclust.sjqey.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
+
+// mongoose.connect("mongodb://localhost/tododb", { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', function callback() {
@@ -111,9 +113,9 @@ const init = async () => {
     path:'/newtododel',
     handler: async (request, h)=> {
       
-        const nTodo=JSON.parse(request.payload);
-      
-        var todomode=  await todomodel.findByIdAndDelete(nTodo.tId)
+        // const nTodo=JSON.parse(request.payload);
+        const pLoad=request.payload
+        var todomode=  await todomodel.findByIdAndDelete(pLoad.tId)
         return request.payload;
 
     }

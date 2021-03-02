@@ -228,7 +228,6 @@ componentDidMount(){
                  
               }
                
-
                 </div> 
               
               </div> 
